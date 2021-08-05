@@ -1,0 +1,23 @@
+.post-input {
+  width: 100%;
+}
+
+mat-card {
+  margin: 10px;
+}
+
+input[type="file"] {
+  visibility: hidden;
+}
+
+.imageThumbnail {
+  width: 100px;
+  height: 100px;
+}
+
+.imageRow {
+  display: flex;
+  align-items: center;
+  margin-right: 25px;
+  gap: 15px;
+}
