@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-header> {{ login ? "Log in" : "Sign up" }} </mat-card-header>
+  <div *ngIf="loading"><mat-spinner></mat-spinner></div>
+  <div *ngIf="!loading">
+    <form [formGroup]="form" (submit)="onSubmit()">
+      <mat-form-field class="login-input">
+        <mat-label> Email </mat-label>
+        <input matInput formControlName="email" required />
+        <mat-error *ngIf="form.controls.email.invalid"> Enter Email </mat-error>
+      </mat-form-field>
+      <mat-form-field class="login-input">
+        <mat-label> Password </mat-label>
+        <input matInput formControlName="password" required />
+        <mat-error *ngIf="form.controls.password.invalid">
+          Enter Password
+        </mat-error>
+      </mat-form-field>
+      <button mat-flat-button type="submit" color="primary">
+        {{ login ? "Log in" : "Sign up" }}
+      </button>
+    </form>
+  </div></mat-card
+>

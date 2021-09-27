@@ -1,0 +1,50 @@
+<div *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+<mat-paginator
+  *ngIf="!!postLength"
+  [length]="postLength"
+  [pageSize]="currentPageSize"
+  [pageSizeOptions]="[2, 5, 10, 25, 100]"
+  (page)="onChangePage($event)"
+>
+</mat-paginator>
+<div *ngIf="!loading">
+  <div *ngIf="!!posts?.length; else elseBlock">
+    <mat-accordion>
+      <div *ngFor="let post of posts">
+        <mat-expansion-panel
+          class="panel"
+          (opened)="open = true"
+          (closed)="open = false"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title> {{ post.title }} </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>{{ post.content }}</p>
+          <img class="image" [src]="post.imagePath" [alt]="post.imagePath" />
+          <mat-action-row>
+            <button
+              type="button"
+              color="accent"
+              mat-stroked-button
+              *ngIf="isLoggedIn && currentUserId === post.createdBy"
+            >
+              <a [routerLink]="['/edit', post.id]"> Edit Post</a>
+            </button>
+            <button
+              type="button"
+              (click)="onDelete(post.id)"
+              color="accent"
+              mat-stroked-button
+              *ngIf="isLoggedIn && currentUserId === post.createdBy"
+            >
+              Delete Post
+            </button>
+          </mat-action-row>
+        </mat-expansion-panel>
+      </div>
+    </mat-accordion>
+  </div>
+  <ng-template #elseBlock><div class="no-posts">No posts yet</div></ng-template>
+</div>

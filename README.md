@@ -25,3 +25,17 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+<!-- MONGO DB HELP -->
+
+NOTES MONGODB
+Connect to mongo db via mongoose YqRJuI8MHwhDtSAL
+mongo "mongodb+srv://cluster0.orht9.mongodb.net/message-app" --username td --password YqRJuI8MHwhDtSAL
+
+To use the console
+
+1. View all collections
+   show collections
+
+2. to view all elements within collections
+   db.[collection].find()

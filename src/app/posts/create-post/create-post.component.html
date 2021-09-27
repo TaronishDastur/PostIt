@@ -1,0 +1,61 @@
+<mat-card>
+  <mat-card-header> Chat </mat-card-header>
+  <div *ngIf="loading"><mat-spinner></mat-spinner></div>
+  <div *ngIf="!loading">
+    <form [formGroup]="form" (submit)="onSave()">
+      <mat-form-field class="post-input">
+        <mat-label> Title </mat-label>
+        <input matInput formControlName="title" required />
+        <mat-error *ngIf="form.controls.title.invalid"> Enter Title </mat-error>
+      </mat-form-field>
+      <mat-form-field class="post-input">
+        <mat-label> Content </mat-label>
+        <textarea
+          matInput
+          rows="5"
+          formControlName="content"
+          required
+        ></textarea>
+        <mat-error *ngIf="form.controls.content.invalid">
+          Enter Content
+        </mat-error>
+      </mat-form-field>
+      <div class="imageRow">
+        <div *ngIf="!!form.controls.imageThumbnail.value">
+          <img
+            class="imageThumbnail"
+            [src]="form.controls.imageThumbnail.value"
+          />
+          <div>{{ this.form.controls.image.value?.name }}</div>
+        </div>
+        <button
+          mat-stroked-button
+          type="button"
+          color="primary"
+          (click)="filePickerBtn.click()"
+          required
+        >
+          Choose Image
+        </button>
+        <mat-error *ngIf="form.controls.image.errors?.incorrectType">
+          Unaccepted File Type: {{ form.controls.image.errors?.incorrectType }}
+        </mat-error>
+        <input
+          type="file"
+          (change)="onFileAdded($event.target)"
+          #filePickerBtn
+        />
+      </div>
+      <mat-card-actions>
+        <button
+          mat-flat-button
+          type="submit"
+          color="primary"
+          [disabled]="this.form.invalid"
+        >
+          Save Post
+        </button>
+      </mat-card-actions>
+    </form>
+  </div>
+</mat-card>
