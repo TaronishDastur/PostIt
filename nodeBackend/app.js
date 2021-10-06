@@ -3,17 +3,21 @@ const mongoose = require("mongoose");
 const path = require("path");
 
 const app = express();
-
 const postsRoutes = require("./routes/posts");
 const usersRoutes = require("./routes/users");
 
-mongoose
-  .connect(
-    "mongodb+srv://td:YqRJuI8MHwhDtSAL@cluster0.orht9.mongodb.net/message-app?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
-  .then(() => console.log("Connected to Mongo"))
-  .catch(() => console.log("Mongo connection failed"));
+const mongoUrl =
+  "mongodb+srv://td:YqRJuI8MHwhDtSAL@cluster0.orht9.mongodb.net/message-app?retryWrites=true&w=majority";
+
+try {
+  mongoose.connect(mongoUrl, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  });
+  console.log("Connected to Mongo");
+} catch {
+  console.log("Mongo connection failed");
+}
 
 // middleware for allowing cross posts + headers
 app.use((req, res, next) => {
@@ -34,6 +38,7 @@ app.use((req, res, next) => {
 app.use(
   express.urlencoded({
     extended: true,
+    limit: "50mb",
   })
 );
 app.use(express.json());

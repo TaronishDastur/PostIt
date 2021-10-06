@@ -1,4 +1,5 @@
 const multer = require("multer");
+const path = require("path");
 
 const MIMETYPE = {
   "image/jpeg": "jpeg",
@@ -16,7 +17,7 @@ const storage = multer.diskStorage({
       error = new Error("File save error : Incorrect file type");
     }
     //callback func (err, destination folder)
-    cb(error, "");
+    cb(error, path.join(__dirname, "../images"));
   },
   filename: (req, file, cb) => {
     // set the name of the file = normalize it by removing spaces and making lowercase

@@ -66,4 +66,10 @@ export class DisplayPostsComponent implements OnInit, OnDestroy {
     this.currentPageSize = event.pageSize;
     this.postService.retrievePosts(this.currentPageSize, this.currentPage);
   }
+
+  convertToBase64(image) {
+    return `data:${image['contentType']};base64,${image['data'].toString(
+      'base64'
+    )}`;
+  }
 }

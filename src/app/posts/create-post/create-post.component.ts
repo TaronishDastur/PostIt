@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { AuthenticationService } from 'src/app/authentication/authentication.service';
 import { PostService } from '../post.service';
 
 @Component({
@@ -47,7 +46,9 @@ export class CreatePostComponent implements OnInit {
           this.form.patchValue({
             title: data.post.title,
             content: data.post.content,
-            imageThumbnail: data.post.imagePath,
+            imageThumbnail: `data:${
+              data.post.image['contentType']
+            };base64,${data.post.image['data'].toString('base64')}`,
             image: null,
           });
           this.loading = false;
@@ -66,15 +67,14 @@ export class CreatePostComponent implements OnInit {
         ? this.postService.addPost(
             this.form.controls.title.value,
             this.form.controls.content.value,
-            this.form.controls.image.value,
+            this.form.controls.image.value
           )
         : this.mode === 2
         ? this.postService.updatePost(
             this.id,
             this.form.controls.title.value,
             this.form.controls.content.value,
-            this.form.controls.image?.value ||
-              this.form.controls.imageThumbnail?.value
+            this.form.controls.image?.value
           )
         : null;
       this.form.reset;

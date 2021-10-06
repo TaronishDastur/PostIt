@@ -1,14 +1,18 @@
+var fs = require("fs");
 const Post = require("../models/post");
+const path = require("path");
 
 exports.addPost = (req, res, next) => {
-  //   set the url for file location
   url = req.protocol + "://" + req.get("host");
-  // console.log("AA", req.body);
-  // console.log(req.file);
   const post = new Post({
     title: req.body.title,
     content: req.body.content,
-    image: req.file,
+    image: {
+      data: fs.readFileSync(
+        path.join(__dirname, "../images/" + req.file.filename)
+      ),
+      contentType: req.file.mimetype,
+    },
     //   added the middleware which automatically adds the userid to the new post
     createdBy: req.user.userId,
   });
@@ -24,7 +28,7 @@ exports.addPost = (req, res, next) => {
       })
     )
     .catch((error) => {
-      console.log(error), res.status(500).json("post add fail");
+      res.status(500).json("post add fail", error);
     });
 };
 
@@ -62,7 +66,7 @@ exports.getPosts = (req, res, next) => {
         length: +len,
       })
     )
-    .catch(() => res.status(500).json("post get fail"));
+    .catch((err) => res.status(500).json("post get fail" + err));
 };
 
 exports.getPostById = (req, res, next) => {
@@ -80,17 +84,26 @@ exports.getPostById = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-  let imagePath = req.body?.imagePath;
+  let image;
   if (req.file) {
-    imagePath =
-      req.protocol + "://" + req.get("host") + "/images/" + req.file.filename;
+    image = {
+      data: fs.readFileSync(
+        path.join(__dirname, "../images/" + req.file.filename)
+      ),
+      contentType: file.mimetype,
+    };
   }
-  const post = new Post({
-    _id: req.params.id,
-    title: req.body.title,
-    content: req.body.content,
-    imagePath,
-  });
+  let post = null;
+  if (image) {
+    post = new Post({
+      _id: req.params.id,
+      title: req.body.title,
+      content: req.body.content,
+      image,
+    });
+  } else {
+    post = { $set: { title: req.body.title, content: req.body.content } };
+  }
   Post.updateOne({ _id: req.params.id, createdBy: req.user.userId }, post)
     .then((data) => {
       if (data.n > 0) {

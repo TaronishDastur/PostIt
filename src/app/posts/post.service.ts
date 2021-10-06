@@ -13,7 +13,6 @@ export class PostService {
   private postsList: Post[] = [];
   private posts$ = new Subject<Post[]>();
   private postsLength$ = new Subject<number>();
-  private userId = '';
   private url = environment.serverUrl + '/posts';
   constructor(private httpClient: HttpClient, private router: Router) {}
 
@@ -31,7 +30,7 @@ export class PostService {
               title: post.title,
               content: post.content,
               id: post._id,
-              imagePath: post.image,
+              image: post.image,
               createdBy: post.createdBy,
             };
           })
@@ -69,21 +68,16 @@ export class PostService {
     return this.httpClient.delete(this.url + '/' + id);
   }
 
-  updatePost(
-    id: string,
-    title: string,
-    content: string,
-    imagePath: string | File
-  ) {
+  updatePost(id: string, title: string, content: string, image) {
     let postData;
-    if (typeof imagePath === 'string') {
-      postData = new Post(title, content, imagePath, this.userId);
+    if (!!image) {
+      postData = { title: title, content: content, image: image, id: id };
     } else {
-      postData = { title: title, content: content, image: imagePath, id: id };
+      postData = { title: title, content: content, id: id };
     }
     this.httpClient.put(this.url + '/' + id, postData).subscribe((res) => {
       this.postsList[this.postsList.findIndex((post) => post.id === id)] =
-        new Post(title, content, imagePath, id);
+        new Post(title, content, image, id);
       this.posts$.next(this.postsList);
       this.router.navigate(['/']);
     });
@@ -92,7 +86,7 @@ export class PostService {
   getPostById(id: string) {
     return this.httpClient.get<{
       message: String;
-      post: { _id: string; content: string; title: string; imagePath: string };
+      post: { _id: string; content: string; title: string; image: string };
     }>(this.url + '/' + id);
   }
 }
