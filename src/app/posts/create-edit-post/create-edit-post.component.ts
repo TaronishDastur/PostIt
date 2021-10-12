@@ -8,17 +8,18 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { MODIFY_POST } from 'src/app/shared/constants';
 import { PostService } from '../post.service';
 
 @Component({
-  selector: 'app-create-post',
-  templateUrl: './create-post.component.html',
-  styleUrls: ['./create-post.component.scss'],
+  selector: 'app-create-edit-post',
+  templateUrl: './create-edit-post.component.html',
+  styleUrls: ['./create-edit-post.component.scss'],
 })
-export class CreatePostComponent implements OnInit {
-  private mode: number;
-  // 1 add
-  // 2 edit
+export class CreateEditPostComponent implements OnInit {
+  MODIFY_POST = MODIFY_POST;
+  mode: number;
   loading = false;
   private id: string;
   form = new FormGroup({
@@ -38,24 +39,27 @@ export class CreatePostComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+    this.route.paramMap.pipe(take(1)).subscribe((paramMap: ParamMap) => {
       if (paramMap.has('id')) {
-        this.mode = 2;
+        this.mode = this.MODIFY_POST.EDIT;
         this.id = paramMap.get('id');
-        this.postService.getPostById(this.id).subscribe((data) => {
-          this.form.patchValue({
-            title: data.post.title,
-            content: data.post.content,
-            imageThumbnail: `data:${
-              data.post.image['contentType']
-            };base64,${data.post.image['data'].toString('base64')}`,
-            image: null,
+        this.postService
+          .getPostById(this.id)
+          .pipe(take(1))
+          .subscribe((data) => {
+            this.form.patchValue({
+              title: data.post.title,
+              content: data.post.content,
+              imageThumbnail: `data:${
+                data.post.image['contentType']
+              };base64,${data.post.image['data'].toString('base64')}`,
+              image: null,
+            });
+            this.loading = false;
           });
-          this.loading = false;
-        });
       } else {
         this.loading = false;
-        this.mode = 1;
+        this.mode = this.MODIFY_POST.ADD;
         this.id = null;
       }
     });

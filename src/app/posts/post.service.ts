@@ -82,7 +82,7 @@ export class PostService {
       this.router.navigate(['/']);
     });
   }
-  // TODO - understand why http call is required here and not directly accessing the list
+
   getPostById(id: string) {
     return this.httpClient.get<{
       message: String;

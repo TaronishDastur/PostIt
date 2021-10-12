@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthenticationGuard } from './authentication/authentication.guard';
-import { CreatePostComponent } from './posts/create-post/create-post.component';
+import { CreateEditPostComponent } from './posts/create-edit-post/create-edit-post.component';
 import { DisplayPostsComponent } from './posts/display-posts/display-posts.component';
 
 const routes: Routes = [
   { path: '', component: DisplayPostsComponent },
   {
     path: 'create',
-    component: CreatePostComponent,
+    component: CreateEditPostComponent,
     canActivate: [AuthenticationGuard],
   },
   {
     path: 'edit/:id',
-    component: CreatePostComponent,
+    component: CreateEditPostComponent,
     canActivate: [AuthenticationGuard],
   },
   {

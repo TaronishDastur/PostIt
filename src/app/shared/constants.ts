@@ -3,3 +3,8 @@ export const MIMETYPE = {
   'image/png': 'png',
   'image/jpg': 'jpg',
 };
+
+export const MODIFY_POST = {
+  ADD: 1,
+  EDIT: 2,
+};

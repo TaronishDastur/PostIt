@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CreatePostComponent } from './create-post/create-post.component';
+import { CreateEditPostComponent } from './create-edit-post/create-edit-post.component';
 import { DisplayPostsComponent } from './display-posts/display-posts.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,7 +9,7 @@ import { MaterialModule } from '../material.module';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [CreatePostComponent, DisplayPostsComponent],
+  declarations: [CreateEditPostComponent, DisplayPostsComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

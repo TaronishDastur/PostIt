@@ -1,5 +1,7 @@
 <mat-card>
-  <mat-card-header> Chat </mat-card-header>
+  <mat-card-title>
+    {{ mode === MODIFY_POST.EDIT ? "Edit" : "Add" }} Post
+  </mat-card-title>
   <div *ngIf="loading"><mat-spinner></mat-spinner></div>
   <div *ngIf="!loading">
     <form [formGroup]="form" (submit)="onSave()">

@@ -19,7 +19,9 @@
           (closed)="open = false"
         >
           <mat-expansion-panel-header>
-            <mat-panel-title> {{ post.title }} </mat-panel-title>
+            <mat-panel-title>
+              <strong> {{ post.title }} </strong>
+            </mat-panel-title>
           </mat-expansion-panel-header>
           <p>{{ post.content }}</p>
           <img
@@ -27,25 +29,21 @@
             [src]="convertToBase64(post.image)"
             [alt]="post.image.data"
           />
-          <mat-action-row>
-            <button
-              type="button"
-              color="accent"
-              mat-stroked-button
-              *ngIf="isLoggedIn && currentUserId === post.createdBy"
-            >
-              <a [routerLink]="['/edit', post.id]"> Edit Post</a>
-            </button>
-            <button
-              type="button"
-              (click)="onDelete(post.id)"
-              color="accent"
-              mat-stroked-button
-              *ngIf="isLoggedIn && currentUserId === post.createdBy"
-            >
-              Delete Post
-            </button>
-          </mat-action-row>
+          <div *ngIf="isLoggedIn && currentUserId === post.createdBy">
+            <mat-action-row>
+              <button type="button" color="accent" mat-stroked-button>
+                <a [routerLink]="['/edit', post.id]"> Edit Post</a>
+              </button>
+              <button
+                type="button"
+                (click)="onDelete(post.id)"
+                color="accent"
+                mat-stroked-button
+              >
+                Delete Post
+              </button>
+            </mat-action-row>
+          </div>
         </mat-expansion-panel>
       </div>
     </mat-accordion>
