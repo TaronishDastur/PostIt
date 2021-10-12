@@ -23,7 +23,6 @@ export class ErrorInterceptor implements HttpInterceptor {
         this.dialog.open(ErrorsComponent, {
           data: { message: error.message },
         });
-        // TODO check if there is a way to not have the error display based on the type of error
         return throwError(error);
       })
     );

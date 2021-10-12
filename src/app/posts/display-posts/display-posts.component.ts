@@ -54,7 +54,6 @@ export class DisplayPostsComponent implements OnInit, OnDestroy {
       });
   }
 
-  // TODO bug - when last post on current page is deleted it shows no posts found and removes the paginator
   onDelete(id) {
     this.postService.deletePost(id).subscribe(() => {
       this.postService.retrievePosts(this.currentPageSize, this.currentPage);
