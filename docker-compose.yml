@@ -4,12 +4,9 @@ services:
   server:
     build: .
     image: post_it_server
-    ports:
-      - "3000:3000"
+    ports: ["3000:3000"]
 
   client:
     build: client
     image: post_it_client
-    ports:
-        -"4200:4200"
-
+    ports: ["4200:4200"]
